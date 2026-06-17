@@ -11,8 +11,8 @@ Om de beperkingen van standaard lineaire waarden te overstijgen, opereert de ker
 
     De Stereografische Projectie (σN​): Om te voorkomen dat functies met meerdere uitkomsten (multi-valente functies) onoverzichtelijk worden, wordt het oneindige platte vlak geprojecteerd op een 3D-sfeer (de Riemannbol, of S2).
 
-        Formule voor projectie op het equatoriale 2D-vlak (R2):
-        σN​(x,y,z)=(1−zx​,1−zy​)
+        Formule voor projectie op het equatoriale 2D-vlak (R2)
+    
 
         Toepassing in VORTEX: Deze logica vormt de basis van de project4Dto2D-functies in de shaders (GLSL). Het reduceert oneindigheid tot één gedefinieerd referentiepunt (de 'noordpool' van de bol), waardoor we 4D-hyperruimtes via een 3D-perspectief op een 2D-scherm kunnen weergeven.
 
@@ -20,10 +20,8 @@ Om de beperkingen van standaard lineaire waarden te overstijgen, opereert de ker
 
 Wanneer het complexe 2D-vlak onvoldoende is voor 3D- en 4D-rotaties (zoals bij de geanimeerde tesseract), wordt het domein uitgebreid.
 
-    Wiskundige Definitie: Quaternionen vormen een vierdimensionale uitbreiding van de complexe getallen:
-    q=w+xi+yj+zk
+    Wiskundige Definitie: Quaternionen vormen een vierdimensionale uitbreiding van de complexe getallen
 
-    waarbij i2=j2=k2=ijk=−1.
 
     Toepassing in VORTEX: Door rotaties in de VORTEX-ruimte als quaternionen te berekenen, vermijdt de architectuur gimbal lock (het verlies van een rotatiegraad wanneer assen parallel komen te staan). Dit garandeert een vloeiende, ononderbroken navigatie door de multidimensionale data.
 
