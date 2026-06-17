@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VORTEX - Topologische Visualisatie</title>
+    <style>
+        /* Reset de marges en zorg dat het canvas het hele scherm vult */
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #050510; /* Diep ruimtetijd-blauw/zwart */
+            color: #ffffff; 
+            font-family: 'Courier New', Courier, monospace; 
+        }
+        #ui-laag { 
+            position: absolute; 
+            top: 20px; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 100; 
+            pointer-events: none;
+            letter-spacing: 2px;
+        }
+        h1 { margin: 0; font-size: 1.2rem; color: #00ffcc; text-transform: uppercase; }
+        p { margin: 5px 0 0 0; font-size: 0.9rem; color: #ff00cc; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="ui-laag">
+        <h1>VORTEX Architectuur Prototype</h1>
+        <p>Riemannbol (S^2) & Torus-lus (S^1 x S^1)</p>
+    </div>
+
+    <script>
+        // 1. SCÈNE, CAMERA & RENDERER OPZETTEN
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 2. DE RIEMANNBOL (Centraal)
+        // Een draadmodel (wireframe) laat het geometrische raster mooi zien
+        const sphereGeometry = new THREE.SphereGeometry(2.5, 32, 32);
+        const sphereMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x00ffcc, // Cyaan
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.4 
+        });
+        const riemannSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        scene.add(riemannSphere);
+
+        // 3. DE TORUS (De oneindige lus eromheen)
+        const torusGeometry = new THREE.TorusGeometry(5, 0.8, 16, 100);
+        const torusMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xff00cc, // Magenta
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.3 
+        });
+        const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+        // Kantel de torus zodat hij als een ring om de bol ligt
+        torus.rotation.x = Math.PI / 2;
+        scene.add(torus);
+
+        // Plaats de camera iets naar achteren om de objecten te zien
+        camera.position.z = 10;
+
+        // 4. ANIMATIELUS (De dynamische ruimtetijd)
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Roteer de Riemannbol
+            riemannSphere.rotation.y += 0.003;
+            riemannSphere.rotation.x += 0.001;
+            
+            // Roteer de Torus in tegengestelde/andere richtingen
+            torus.rotation.z -= 0.002;
+            torus.rotation.y += 0.001;
+
+            renderer.render(scene, camera);
+        }
+        
+        // Start de animatie
+        animate();
+
+        // 5. SCHERM HERSCHALEN (Responsiviteit)
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
